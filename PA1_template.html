@@ -386,7 +386,7 @@ summary {
 ## 5    NA 2012-10-01       20
 ## 6    NA 2012-10-01       25</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Convert variable ‘date’ from chr to Date type</li>
+<li>Convert variable ‘date’ from character type to Date type</li>
 </ol>
 <pre class="r"><code>    dat$date &lt;- as.Date(dat$date)
     class(dat$date)</code></pre>
@@ -481,7 +481,8 @@ summary {
 <li>Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.</li>
 </ol>
 <pre class="r"><code>    dat &lt;- dat %&gt;% mutate(wday = if_else(weekdays(date, abbreviate = TRUE) %in%
-                                           c(&quot;Sat&quot;, &quot;Sun&quot;), &quot;weekend&quot;, &quot;weekday&quot;))</code></pre>
+                                           c(&quot;Sat&quot;, &quot;Sun&quot;), &quot;weekend&quot;, &quot;weekday&quot;))
+    dat$wday &lt;- factor(dat$wday)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Make a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).</li>
 </ol>

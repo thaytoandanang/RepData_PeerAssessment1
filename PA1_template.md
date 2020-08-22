@@ -39,7 +39,7 @@ output:
 ## 6    NA 2012-10-01       25
 ```
 
-2. Convert variable 'date' from chr to Date type 
+2. Convert variable 'date' from character type to Date type 
 
 
 ```r
@@ -75,7 +75,7 @@ output:
                       main = "Histogram of steps per day", col = "blue")
 ```
 
-![](PA1_template_files/figure-html/histgram stepsperday-1.png)<!-- -->
+![](PA1_template_files/figure-html/histgram1-1.png)<!-- -->
 
 3. Mean and median of the total number of steps taken per day
 
@@ -110,7 +110,7 @@ output:
                              main = "Average number of steps via Interval"))
 ```
 
-![](PA1_template_files/figure-html/plot number of steps via interval-1.png)<!-- -->
+![](PA1_template_files/figure-html/stepsviainterval-1.png)<!-- -->
 
 2. The interval contains the maximum number of steps
 
@@ -179,7 +179,7 @@ output:
                         main = "Histogram of steps per day", col = "blue")
 ```
 
-![](PA1_template_files/figure-html/histogram steps per day with filled data set-1.png)<!-- -->
+![](PA1_template_files/figure-html/histgram2-1.png)<!-- -->
 
 
 ```
@@ -206,6 +206,7 @@ output:
 ```r
     dat <- dat %>% mutate(wday = if_else(weekdays(date, abbreviate = TRUE) %in%
                                            c("Sat", "Sun"), "weekend", "weekday"))
+    dat$wday <- factor(dat$wday)
 ```
 
 2. Make a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
@@ -218,5 +219,5 @@ output:
       ggtitle("Average number of steps via Interval in WeekDay and Weekend")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+![](PA1_template_files/figure-html/wdayandweekend-1.png)<!-- -->
 

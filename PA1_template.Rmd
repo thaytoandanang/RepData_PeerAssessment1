@@ -21,9 +21,9 @@ output:
     head(dat)
 ```
 
-2. Convert variable 'date' from chr to Date type 
+2. Convert variable 'date' from character type to Date type 
 
-```{r convert variable date from chr to date type}
+```{r convert}
     dat$date <- as.Date(dat$date)
     class(dat$date)
 ```
@@ -32,7 +32,7 @@ output:
 
 1. Calculate the total number of steps taken per day
 
-```{r calculate stepsperday, message=FALSE}
+```{r stepsperday, message=FALSE}
     stepsperday <- dat %>%  group_by(date) %>% 
                             summarise(steps = sum(steps, na.rm = TRUE)) %>% 
                             pull(steps)
@@ -41,14 +41,14 @@ output:
 
 2. Histogram of the total number of steps taken each day
 
-```{r histgram stepsperday}
+```{r histgram1}
    hist(stepsperday, xlab = "Number of steps per day", 
                       main = "Histogram of steps per day", col = "blue")
 ```
 
 3. Mean and median of the total number of steps taken per day
 
-```{r calculate mean and median}
+```{r meanandmedian}
     mean(stepsperday, na.rm = TRUE)
     median(stepsperday, na.rm = TRUE)
 ```
@@ -57,7 +57,7 @@ output:
 
 1. Series plot (type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r plot number of steps via interval, message=FALSE}
+```{r stepsviainterval, message=FALSE}
     stepsperint <- dat %>% group_by(interval) %>% 
                             summarise(avg = mean(steps, na.rm = TRUE))
     with(stepsperint, plot(interval, avg, type = "l", col = "blue",
@@ -68,7 +68,7 @@ output:
 
 2. The interval contains the maximum number of steps
 
-```{r find the interval with max steps}
+```{r findtheintervalwithmaxsteps}
     m <- stepsperint[order(-stepsperint$avg),1][1,1]
     as.numeric(m)
 ```
@@ -77,13 +77,13 @@ output:
 
 1. Total number of missing values in the dataset
 
-```{r calculate total number of missing observations}
+```{r missingobservations}
     sum(!complete.cases(dat))
 ```
 
 2. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-```{r filling the missing data set}
+```{r filling}
     intervals <- unique(dat$interval)
     for (x in intervals) {
         dat[dat$interval == x, "steps"][is.na(dat[dat$interval == x, "steps"])] =
@@ -95,7 +95,7 @@ output:
 
 3. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.
 
-```{r histogram steps per day with filled data set, message=FALSE}
+```{r histgram2, message=FALSE}
      sum(!complete.cases(dat))
      stepsperday2 <- dat %>% group_by(date) %>% 
                             summarise(steps = sum(steps)) %>% 
@@ -104,7 +104,7 @@ output:
                         main = "Histogram of steps per day", col = "blue")
 ```
 
-```{r compare mean and median with missing and filled data set, echo=FALSE}
+```{r compare, echo=FALSE}
      m1 <- mean(stepsperday)
      m2 <- mean(stepsperday2)
      
@@ -125,14 +125,15 @@ output:
 
 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
-```{r}
+```{r factorwday}
     dat <- dat %>% mutate(wday = if_else(weekdays(date, abbreviate = TRUE) %in%
                                            c("Sat", "Sun"), "weekend", "weekday"))
+    dat$wday <- factor(dat$wday)
 ```
 
 2. Make a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 
-```{r, message= FALSE}
+```{r wdayandweekend, message= FALSE}
     df <- dat %>% group_by(interval, wday) %>% summarise(steps = mean(steps))
     g <- df %>% ggplot(aes(interval, steps))
     g + geom_line(col = "blue") + facet_grid(wday~.) + theme_bw() + 
